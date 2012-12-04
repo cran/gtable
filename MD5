@@ -1,13 +1,14 @@
-bf3c1b9661e6a67e056fd0a8b38adb25 *DESCRIPTION
+b81fc96ac2b39b0f70401d4f493a011c *DESCRIPTION
 aceff3cac159b84c2301a916425f5bb9 *NAMESPACE
+87ec502e2754ffe60370d2b945b114d2 *NEWS
 aa2d8709ce2b301b8ea881d3496fcf55 *R/add-grob.r
 a3934688cb46d87a212f19a2ccdeb320 *R/add-rows-cols.r
 2e99bd0f88a2aac5becadd942d92062b *R/add-space.r
 94620d21a0d192a9b8caadb388347d90 *R/align.r
 77cd910b23e4260e50029091d34283af *R/filter.r
-ce0b58136d6d0e1eba731b47b6d8bbfb *R/grid.r
+3c4d1c5c6a4693f93c3e7c5e30fea90d *R/grid.r
 acafba5a5073f924fa0169a97e8d5c1c *R/gtable-layouts.r
-aed1f83bda0dce25adf2f1b2f3f888f6 *R/gtable.r
+5e6b094ab70064795b3dd7db83d4ffaa *R/gtable.r
 1b46efbe71745d129c6a6034141ac3eb *R/padding.r
 0cf68b5d9b21412cc318c0c878b6646d *R/rbind-cbind.r
 3d6f7e2babbdd7bde1d09db90ade24b3 *R/trim.r
@@ -36,6 +37,7 @@ c10bb024e479195497aee5d02efdcc5b *man/gtable_spacer.Rd
 cba8ca38810e61ba86309c0d55a1a995 *man/gtable_trim.Rd
 d8257c34950ebeec8a8465ce8670085e *man/gtable_width.Rd
 8b8b5e451db347726445b25439ac097d *man/is.gtable.Rd
+acdfd5ad891db98f177b7f480ca2ab30 *man/print.gtable.Rd
 e1e8c8450df614a6bdd56b679ecdd74c *man/z_arrange_gtables.Rd
 444a2ea9a33f20d3d61dbb3c32d1a9e7 *man/z_normalise.Rd
 351ec868144d09e329474de7f9a2c9c8 *tests/test-all.R
