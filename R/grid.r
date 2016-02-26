@@ -1,5 +1,5 @@
 #' Visualise the layout of a gtable.
-#' 
+#'
 #' @export
 #' @param x a gtable object
 gtable_show_layout <- function(x) {
@@ -22,59 +22,48 @@ vpname <- function(row) {
   paste(row$name, ".", row$t, "-", row$r, "-", row$b, "-", row$l, sep = "")
 }
 
-#' @S3method widthDetails gtable
+#' @export
 widthDetails.gtable <- function(x) absolute.size(gtable_width(x))
 
-#' @S3method heightDetails gtable
+#' @export
 heightDetails.gtable <- function(x) absolute.size(gtable_height(x))
 
-#' @S3method grid.draw gtable
-grid.draw.gtable <- function(x, recording = TRUE) {
-  if (length(x$grobs) == 0) return(invisible())
-
-  children_vps <- mapply(child_vp,
-    vp_name = vpname(x$layout),
-    t = x$layout$t, r = x$layout$r, b = x$layout$b, l = x$layout$l,
-    clip = x$layout$clip,
-    SIMPLIFY = FALSE)
-
-  x$grobs <- mapply(wrap_gtableChild, x$grobs, children_vps,
-    SIMPLIFY = FALSE)
-
-  if (inherits(x, "gTableChild")) {
-    gt <- gTree(children = do.call("gList", x$grobs[order(x$layout$z)]),
-      cl = c("gTableParent", "gTableChild"),
-      vp = x$vp,
-      wrapvp = x$wrapvp,
-      layoutvp = viewport(layout = gtable_layout(x), name = x$name))
+#' @export
+makeContext.gtable <- function(x) {
+  layoutvp <- viewport(layout = gtable_layout(x), name = x$name)
+  if (is.null(x$vp)) {
+    x$vp <- layoutvp
   } else {
-    gt <- gTree(children = do.call("gList", x$grobs[order(x$layout$z)]),
-      cl = c("gTableParent"),
-      vp = x$vp,
-      layoutvp = viewport(layout = gtable_layout(x), name = x$name))
+    x$vp <- vpStack(x$vp, layoutvp)
   }
-
-  grid.draw(gt)
-  invisible()
+  x
 }
 
-#' @S3method grid.draw gTableChild
-grid.draw.gTableChild <- function(x, recording) {
-  pushViewport(x$wrapvp, recording = FALSE)
+#' @export
+makeContent.gtable <- function(x) {
+  children_vps <- mapply(child_vp,
+                         vp_name = vpname(x$layout),
+                         t = x$layout$t, r = x$layout$r,
+                         b = x$layout$b, l = x$layout$l,
+                         clip = x$layout$clip,
+                         SIMPLIFY = FALSE)
+  x$grobs <- mapply(wrap_gtableChild, x$grobs, children_vps,
+                    SIMPLIFY = FALSE)
+  setChildren(x, do.call("gList", x$grobs[order(x$layout$z)]))
+}
+
+#' @export
+makeContext.gTableChild <- function(x) {
+  if (is.null(x$vp)) {
+    x$vp <- x$wrapvp
+  } else {
+    x$vp <- vpStack(x$wrapvp, x$vp)
+  }
+  # A gTableChild extends an arbitrary grob class
+  # so allow existing makeContext() behaviour of
+  # original grob class to still occur
   NextMethod()
-  upViewport(recording = FALSE)
 }
-
-#' @S3method preDrawDetails gTableParent
-preDrawDetails.gTableParent <- function(x) {
-  pushViewport(x$layoutvp, recording = FALSE)
-}
-
-#' @S3method postDrawDetails gTableParent
-postDrawDetails.gTableParent <- function(x) {
-  upViewport(recording = FALSE)
-}
-
 
 # Return the viewport for a child grob in a gtable
 child_vp <- function(vp_name, t, r, b, l, clip) {
