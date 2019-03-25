@@ -1,10 +1,3 @@
-#' gtable
-#'
-#' @import grid
-#' @docType package
-#' @name gtable
-NULL
-
 #' Create a new grob table.
 #'
 #' A grob table captures all the information needed to layout grobs in a table
@@ -24,7 +17,7 @@ NULL
 #' table (cell heights and widths), the layout (for each grob, its position,
 #' name and other settings), and global parameters.
 #'
-#' It's easier to understand how \code{gtable} works if in your head you keep
+#' It's easier to understand how `gtable` works if in your head you keep
 #' the table separate from it's contents.  Each cell can have 0, 1, or many
 #' grobs inside. Each grob must belong to at least one cell, but can span
 #' across many cells.
@@ -35,36 +28,39 @@ NULL
 #' and columns:
 #'
 #' \itemize{
-#'   \item \code{t} top extent of grob
-#'   \item \code{r} right extent of grob
-#'   \item \code{b} bottom extent of
-#'   \item \code{l} left extent of grob
-#'   \item \code{z} the z-order of the grob - used to reorder the grobs
+#'   \item `t` top extent of grob
+#'   \item `r` right extent of grob
+#'   \item `b` bottom extent of
+#'   \item `l` left extent of grob
+#'   \item `z` the z-order of the grob - used to reorder the grobs
 #'     before they are rendered
-#'   \item \code{clip} a string, specifying how the grob should be clipped:
-#'     either \code{"on"}, \code{"off"} or \code{"inherit"}
-#'   \item \code{name}, a character vector used to name each grob and its
+#'   \item `clip` a string, specifying how the grob should be clipped:
+#'     either `"on"`, `"off"` or `"inherit"`
+#'   \item `name`, a character vector used to name each grob and its
 #'     viewport
 #' }
 #'
 #' You should not need to modify this data frame directly - instead use
-#' functions like \code{gtable_add_grob}.
+#' functions like `gtable_add_grob`.
 #'
 #' @param widths a unit vector giving the width of each column
 #' @param heights a unit vector giving the height of each row
 #' @param respect a logical vector of length 1: should the aspect ratio of
 #'   height and width specified in null units be respected.  See
-#'   \code{\link{grid.layout}} for more details
+#'   [grid.layout()] for more details
 #' @param name a string giving the name of the table. This is used to name
 #'   the layout viewport
 #' @param rownames,colnames character vectors of row and column names, used
-#'   for characteric subsetting, particularly for \code{gtable_align},
-#'   and \code{gtable_join}.
+#'   for characteric subsetting, particularly for `gtable_align`,
+#'   and `gtable_join`.
 #' @param vp a grid viewport object (or NULL).
+#'
+#' @return A gtable object
+#'
+#' @family gtable construction
+#'
 #' @export
-#' @aliases gtable-package
-#' @seealso \code{\link{gtable_row}}, \code{\link{gtable_col}} and
-#'   \code{\link{gtable_matrix}} for convenient ways of creating gtables.
+#'
 #' @examples
 #' library(grid)
 #' a <- gtable(unit(1:3, c("cm")), unit(5, "cm"))
@@ -97,59 +93,63 @@ NULL
 #' colnames(b) <- letters[1:3]
 #' dimnames(b)
 gtable <- function(widths = list(), heights = list(), respect = FALSE,
-  name = "layout", rownames = NULL, colnames = NULL, vp = NULL) {
-
+                   name = "layout", rownames = NULL, colnames = NULL, vp = NULL) {
   if (length(widths) > 0) {
-    stopifnot(is.unit(widths))
-    stopifnot(is.null(colnames) || length(colnames == length(widths)))
+    if (!is.unit(widths)) stop("widths must be a unit object", call. = FALSE)
+    if (!(is.null(colnames) || length(colnames == length(widths)))) stop("colnames must either be NULL or have the same length as widths", call. = FALSE)
   }
   if (length(heights) > 0) {
-    stopifnot(is.unit(heights))
-    stopifnot(is.null(rownames) || length(rownames == length(heights)))
+    if (!is.unit(heights)) stop("heights must be a unit object", call. = FALSE)
+    if (!(is.null(rownames) || length(rownames == length(heights)))) stop("rownames must either be NULL or have the same length as heights", call. = FALSE)
   }
 
-  layout <- data.frame(
+  layout <- new_data_frame(list(
     t = numeric(), l = numeric(), b = numeric(), r = numeric(), z = numeric(),
-    clip = character(), name = character(), stringsAsFactors = FALSE)
+    clip = character(), name = character()
+  ), n = 0)
 
   if (!is.null(vp)) {
-    vp <- viewport(name = name,
+    vp <- viewport(
+      name = name,
       x = vp$x, y = vp$y,
       width = vp$width, height = vp$height,
       just = vp$just, gp = vp$gp, xscale = vp$xscale,
-      yscale = vp$yscale, angle = vp$angle, clip = vp$clip)
+      yscale = vp$yscale, angle = vp$angle, clip = vp$clip
+    )
   }
 
   gTree(
     grobs = list(), layout = layout, widths = widths,
     heights = heights, respect = respect, name = name,
     rownames = rownames, colnames = colnames, vp = vp,
-    cl = "gtable")
+    cl = "gtable"
+  )
 }
 
 #' Print a gtable object
 #'
 #' @param x A gtable object.
-#' @param zsort Sort by z values? Default \code{FALSE}.
+#' @param zsort Sort by z values? Default `FALSE`.
 #' @param ... Other arguments (not used by this method).
 #' @export
 #' @method print gtable
 print.gtable <- function(x, zsort = FALSE, ...) {
-  cat("TableGrob (", nrow(x), " x ", ncol(x), ") \"", x$name, "\": ",
-    length(x$grobs), " grobs\n", sep = "")
+  cat("TableGrob (", length(x$heights), " x ", length(x$widths), ") \"", x$name, "\": ",
+      length(x$grobs), " grobs\n", sep = "")
 
   if (nrow(x$layout) == 0) return()
 
   pos <- as.data.frame(format(as.matrix(x$layout[c("t", "r", "b", "l")])),
-    stringsAsFactors = FALSE)
+    stringsAsFactors = FALSE
+  )
   grobNames <- vapply(x$grobs, as.character, character(1))
 
   info <- data.frame(
     z = x$layout$z,
-    cells = paste("(", pos$t, "-", pos$b, ",", pos$l, "-", pos$r, ")", sep =""),
+    cells = paste("(", pos$t, "-", pos$b, ",", pos$l, "-", pos$r, ")", sep = ""),
     name = x$layout$name,
     grob = grobNames
-    )
+  )
   if (zsort) info <- info[order(x$layout$z), ]
 
   print(info)
@@ -167,10 +167,16 @@ dimnames.gtable <- function(x, ...) list(x$rownames, x$colnames)
   x$rownames <- value[[1]]
   x$colnames <- value[[2]]
 
-  if (anyDuplicated(x$rownames)) stop("rownames must be distinct",
-    call. = FALSE)
-  if (anyDuplicated(x$colnames)) stop("colnames must be distinct",
-    call. = FALSE)
+  if (anyDuplicated(x$rownames)) {
+    stop("rownames must be distinct",
+      call. = FALSE
+    )
+  }
+  if (anyDuplicated(x$colnames)) {
+    stop("colnames must be distinct",
+      call. = FALSE
+    )
+  }
 
   x
 }
@@ -195,12 +201,15 @@ is.gtable <- function(x) {
 #' @export
 t.gtable <- function(x) {
   new <- x
+  layout <- unclass(x$layout)
+  old_lay <- layout
 
-  new$layout$t <- x$layout$l
-  new$layout$r <- x$layout$b
-  new$layout$b <- x$layout$r
-  new$layout$l <- x$layout$t
+  layout$t <- old_lay$l
+  layout$r <- old_lay$b
+  layout$b <- old_lay$r
+  layout$l <- old_lay$t
 
+  new$layout <- new_data_frame(layout)
   new$widths <- x$heights
   new$heights <- x$widths
 
@@ -213,6 +222,11 @@ t.gtable <- function(x) {
   rows <- stats::setNames(seq_along(x$heights), rownames(x))[i]
   cols <- stats::setNames(seq_along(x$widths), colnames(x))[j]
 
+  if ((length(rows) > 1 && any(diff(rows) < 1)) ||
+      (length(cols) > 1 && any(diff(cols) < 1))) {
+    stop("i and j must be increasing sequences of numbers", call. = FALSE)
+  }
+
   i <- seq_along(x$heights) %in% seq_along(x$heights)[rows]
   j <- seq_along(x$widths) %in% seq_along(x$widths)[cols]
 
@@ -221,20 +235,22 @@ t.gtable <- function(x) {
   x$widths <- x$widths[cols]
   x$colnames <- x$colnames[cols]
 
-  keep <- x$layout$t %in% rows & x$layout$b %in% rows &
-          x$layout$l %in% cols & x$layout$r %in% cols
+  layout <- unclass(x$layout)
+
+  keep <- layout$t %in% rows & layout$b %in% rows &
+          layout$l %in% cols & layout$r %in% cols
   x$grobs <- x$grobs[keep]
 
   adj_rows <- cumsum(!i)
   adj_cols <- cumsum(!j)
 
-  x$layout$r <- x$layout$r - adj_cols[x$layout$r]
-  x$layout$l <- x$layout$l - adj_cols[x$layout$l]
-  x$layout$t <- x$layout$t - adj_rows[x$layout$t]
-  x$layout$b <- x$layout$b - adj_rows[x$layout$b]
+  layout$r <- layout$r - adj_cols[layout$r]
+  layout$l <- layout$l - adj_cols[layout$l]
+  layout$t <- layout$t - adj_rows[layout$t]
+  layout$b <- layout$b - adj_rows[layout$b]
 
   # Drop the unused rows from layout
-  x$layout <- x$layout[keep, ]
+  x$layout <- new_data_frame(layout)[keep, ]
   x
 }
 

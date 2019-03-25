@@ -7,13 +7,17 @@
 gtable_add_padding(x, padding)
 }
 \arguments{
-\item{x}{a \code{\link{gtable}} object}
+\item{x}{a \code{\link[=gtable]{gtable()}} object}
 
 \item{padding}{vector of length 4: top, right, bottom, left.  Normal
 recycling rules apply.}
 }
+\value{
+A gtable object
+}
 \description{
-Add padding around edges of table.
+This is a convenience function for adding an extra row and an extra column at
+each edge of the table.
 }
 \examples{
 library(grid)
@@ -29,4 +33,11 @@ plot(pad)
 plot(cbind(pad, pad))
 plot(rbind(pad, pad))
 }
-
+\seealso{
+Other gtable manipulation: \code{\link{gtable_add_cols}},
+  \code{\link{gtable_add_grob}},
+  \code{\link{gtable_add_rows}},
+  \code{\link{gtable_add_space}},
+  \code{\link{gtable_filter}}
+}
+\concept{gtable manipulation}

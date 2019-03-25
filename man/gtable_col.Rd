@@ -2,7 +2,7 @@
 % Please edit documentation in R/gtable-layouts.r
 \name{gtable_col}
 \alias{gtable_col}
-\title{Create a single column gtable.}
+\title{Create a single column gtable}
 \usage{
 gtable_col(name, grobs, width = NULL, heights = NULL, z = NULL,
   vp = NULL)
@@ -18,14 +18,19 @@ the layout viewport}
 \item{heights}{a unit vector giving the height of each row}
 
 \item{z}{a numeric vector giving the order in which the grobs should be
- plotted.  Use \code{Inf} (the default) to plot above or \code{-Inf}
- below all existing grobs. By default positions are on the integers, 
+plotted.  Use \code{Inf} (the default) to plot above or \code{-Inf}
+below all existing grobs. By default positions are on the integers,
 giving plenty of room to insert new grobs between existing grobs.}
 
 \item{vp}{a grid viewport object (or NULL).}
 }
+\value{
+A gtable with one column and as many rows as elements in the grobs
+list.
+}
 \description{
-Create a single column gtable.
+This function stacks a list of grobs into a single column gtable of the given
+width and heights.
 }
 \examples{
 library(grid)
@@ -37,4 +42,9 @@ gt
 plot(gt)
 gtable_show_layout(gt)
 }
-
+\seealso{
+Other gtable construction: \code{\link{gtable_matrix}},
+  \code{\link{gtable_row}}, \code{\link{gtable_spacer}},
+  \code{\link{gtable}}
+}
+\concept{gtable construction}
