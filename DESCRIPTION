@@ -1,6 +1,6 @@
 Package: gtable
 Title: Arrange 'Grobs' in Tables
-Version: 0.3.2
+Version: 0.3.3
 Authors@R: 
     c(person(given = "Hadley",
              family = "Wickham",
@@ -19,7 +19,7 @@ Description: Tools to make it easier to work with "tables" of
     complex compositions can be built up sequentially.
 License: MIT + file LICENSE
 Depends: R (>= 3.5)
-Imports: cli, glue, grid, lifecycle, rlang
+Imports: cli, glue, grid, lifecycle, rlang (>= 1.1.0)
 Suggests: covr, ggplot2, knitr, profvis, rmarkdown, testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Encoding: UTF-8
@@ -29,10 +29,10 @@ BugReports: https://github.com/r-lib/gtable/issues
 Config/testthat/edition: 3
 Config/Needs/website: tidyverse/tidytemplate
 NeedsCompilation: no
-Packaged: 2023-03-17 13:01:04 UTC; thomas
+Packaged: 2023-03-21 13:17:30 UTC; thomas
 Author: Hadley Wickham [aut],
   Thomas Lin Pedersen [aut, cre],
   Posit Software, PBC [cph]
 Maintainer: Thomas Lin Pedersen <thomas.pedersen@posit.co>
 Repository: CRAN
-Date/Publication: 2023-03-17 15:20:02 UTC
+Date/Publication: 2023-03-21 14:00:05 UTC

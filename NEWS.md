@@ -1,3 +1,7 @@
+# gtable 0.3.3
+
+* Specify minimum rlang version
+
 # gtable 0.3.2
 
 * General upkeep

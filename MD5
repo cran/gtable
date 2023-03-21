@@ -1,7 +1,7 @@
-8a2a6a000a501f28cc7c841fe2d805d7 *DESCRIPTION
+6e7b838860d3b8bf231c7e3c777f2266 *DESCRIPTION
 3aaeb9e53655d136b3fa6837839c8407 *LICENSE
 c743e6f3e605bab6d384ca4c739405e4 *NAMESPACE
-9afc2db2e84a14692087cc5afb15bc89 *NEWS.md
+a0ea7b155706aa83c77959869cf50def *NEWS.md
 de9951072264e48924c64efd03fb1859 *R/add-grob.R
 db046ce74914bb1497fcf9d40e6f6861 *R/add-rows-cols.R
 5fcb794af78719b76da45a6f93553aec *R/add-space.R
@@ -24,7 +24,7 @@ ba65af2a0dc0c87a3d2d8a68ab949753 *R/rbind-cbind.R
 430e2ae66a3ec617521eb9b8b18600b8 *build/vignette.rds
 bfd2419a203f5600031fd85e2259d648 *inst/doc/profiling.R
 a9b52f80e879374a7ec3dc651dd801c9 *inst/doc/profiling.Rmd
-4dc88d58118cf95b898db9d3921d3fa7 *inst/doc/profiling.html
+e34236f3564adf2c69c4eec594181521 *inst/doc/profiling.html
 56461bef2ce61c01b74bb8000a60c01d *man/bind.Rd
 1b1ad7377317b4b302ab7c096ebfef17 *man/figures/README-unnamed-chunk-2-1.png
 d85a92b20241dbb41627c3194778e784 *man/figures/README-unnamed-chunk-3-1.png
