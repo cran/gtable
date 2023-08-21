@@ -1,3 +1,7 @@
+# gtable 0.3.4
+
+* Fix package doc links
+
 # gtable 0.3.3
 
 * Specify minimum rlang version

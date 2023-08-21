@@ -1,6 +1,6 @@
 Package: gtable
 Title: Arrange 'Grobs' in Tables
-Version: 0.3.3
+Version: 0.3.4
 Authors@R: 
     c(person(given = "Hadley",
              family = "Wickham",
@@ -29,10 +29,10 @@ BugReports: https://github.com/r-lib/gtable/issues
 Config/testthat/edition: 3
 Config/Needs/website: tidyverse/tidytemplate
 NeedsCompilation: no
-Packaged: 2023-03-21 13:17:30 UTC; thomas
+Packaged: 2023-08-21 10:36:53 UTC; thomas
 Author: Hadley Wickham [aut],
   Thomas Lin Pedersen [aut, cre],
   Posit Software, PBC [cph]
 Maintainer: Thomas Lin Pedersen <thomas.pedersen@posit.co>
 Repository: CRAN
-Date/Publication: 2023-03-21 14:00:05 UTC
+Date/Publication: 2023-08-21 11:20:02 UTC

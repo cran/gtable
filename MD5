@@ -1,7 +1,7 @@
-6e7b838860d3b8bf231c7e3c777f2266 *DESCRIPTION
+a995cc3f247daf6772ddd063ab881d37 *DESCRIPTION
 3aaeb9e53655d136b3fa6837839c8407 *LICENSE
 c743e6f3e605bab6d384ca4c739405e4 *NAMESPACE
-a0ea7b155706aa83c77959869cf50def *NEWS.md
+eced2f9b6400be1eb294e62bbc7fb613 *NEWS.md
 de9951072264e48924c64efd03fb1859 *R/add-grob.R
 db046ce74914bb1497fcf9d40e6f6861 *R/add-rows-cols.R
 5fcb794af78719b76da45a6f93553aec *R/add-space.R
@@ -9,7 +9,7 @@ db046ce74914bb1497fcf9d40e6f6861 *R/add-rows-cols.R
 897d8d1f99d9e86f5f7b378f92b1ff65 *R/filter.R
 3666f73601ef34bd8e257ed78bbffab7 *R/grid.R
 73c5531eafb4520c8daddf43158694a3 *R/gtable-layouts.R
-8166b2799b3228a55fb518b2dfcb2fe0 *R/gtable-package.R
+b1cf2926d37f9b58481f90a7a92ec893 *R/gtable-package.R
 510a6ecffc1b78f01cc5cb9917dd30a4 *R/gtable.R
 8c5f08458cfd4e7f75a27924b2789c83 *R/import-standalone-obj-type.R
 09c045dfb7be704d32aec050f68a17a3 *R/import-standalone-types-check.R
@@ -24,7 +24,7 @@ ba65af2a0dc0c87a3d2d8a68ab949753 *R/rbind-cbind.R
 430e2ae66a3ec617521eb9b8b18600b8 *build/vignette.rds
 bfd2419a203f5600031fd85e2259d648 *inst/doc/profiling.R
 a9b52f80e879374a7ec3dc651dd801c9 *inst/doc/profiling.Rmd
-e34236f3564adf2c69c4eec594181521 *inst/doc/profiling.html
+1ac0f6d61c4e67dc8e95249cbf16c90a *inst/doc/profiling.html
 56461bef2ce61c01b74bb8000a60c01d *man/bind.Rd
 1b1ad7377317b4b302ab7c096ebfef17 *man/figures/README-unnamed-chunk-2-1.png
 d85a92b20241dbb41627c3194778e784 *man/figures/README-unnamed-chunk-3-1.png
@@ -38,7 +38,7 @@ f41ed996be135fb35afe00641621da61 *man/figures/lifecycle-questioning.svg
 ed42e3fbd7cc30bc6ca8fa9b658e24a8 *man/figures/lifecycle-stable.svg
 99f6e77d8cd1072e42e744a4950e143a *man/figures/lifecycle-superseded.svg
 9e4068889a772868405422612cb474d8 *man/figures/logo.png
-d9c4051d8ebf0bd886f5848151181056 *man/gtable-package.Rd
+5440e47c5f42907f6cfef0554e59aeea *man/gtable-package.Rd
 e966bcc13bb59d0ab6c9540a70b50b39 *man/gtable.Rd
 54d5e9dacd917c9467947ded4cc43640 *man/gtable_add_cols.Rd
 2a9faca3e62fcfe147019db21a4376f9 *man/gtable_add_grob.Rd

@@ -338,18 +338,18 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p>In order to continuously monitor the performance of gtable the
 following piece of code is used to generate a profile and inspect
 it:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(profvis)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(mtcars, <span class="fu">aes</span>(mpg, disp)) <span class="sc">+</span> </span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(gear<span class="sc">~</span>cyl)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>p_build <span class="ot">&lt;-</span> <span class="fu">ggplot_build</span>(p)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>profile <span class="ot">&lt;-</span> <span class="fu">profvis</span>(<span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="dv">100</span>)) <span class="fu">ggplot_gtable</span>(p_build))</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>profile</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(profvis)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(mtcars, <span class="fu">aes</span>(mpg, disp)) <span class="sc">+</span> </span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>  <span class="fu">facet_grid</span>(gear<span class="sc">~</span>cyl)</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>p_build <span class="ot">&lt;-</span> <span class="fu">ggplot_build</span>(p)</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>profile <span class="ot">&lt;-</span> <span class="fu">profvis</span>(<span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="dv">100</span>)) <span class="fu">ggplot_gtable</span>(p_build))</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>profile</span></code></pre></div>
 <p>The use of an empty ggplot2 ensures that the profile is based on
 real-life use and includes complex gtable assembly. Profiles for old
 version are kept for reference and can be accessed at the <a href="https://github.com/r-lib/gtable/tree/master/vignettes/profilings">github
@@ -362,8 +362,8 @@ quantify improvements to performance over time.</p>
 <h2>Performance focused changes across versions</h2>
 <p>To keep track of changes focused on improving the performance of
 gtable they are summarised below:</p>
-<div id="v0.3.3" class="section level3">
-<h3>v0.3.3</h3>
+<div id="v0.3.4" class="section level3">
+<h3>v0.3.4</h3>
 <p>Profiling results from gtable v0.2.0 identified a range of areas that
 could be easily improved by fairly small code changes. These changes
 resulted in roughly 20% decrease in running time on the profiling code
