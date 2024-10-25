@@ -51,8 +51,7 @@
 #' @param name a string giving the name of the table. This is used to name
 #'   the layout viewport
 #' @param rownames,colnames character vectors of row and column names, used
-#'   for characteric subsetting, particularly for `gtable_align`,
-#'   and `gtable_join`.
+#'   for characteric subsetting.
 #' @param vp a grid viewport object (or NULL).
 #'
 #' @return A gtable object
@@ -182,11 +181,15 @@ dimnames.gtable <- function(x, ...) list(x$rownames, x$colnames)
 }
 
 #' @export
-plot.gtable <- function(x, ...) {
+plot.gtable <- function(x, bg = NULL, grill = NULL, ...) {
   grid.newpage()
-  grid.rect(gp = gpar(fill = "grey95"))
-  grid <- seq(0, 1, length.out = 20)
-  grid.grill(h = grid, v = grid, gp = gpar(col = "white"))
+  if (!is.null(bg)) {
+    grid.rect(gp = gpar(fill = bg))
+  }
+  if (!is.null(grill)) {
+    grid <- seq(0, 1, length.out = 20)
+    grid.grill(h = grid, v = grid, gp = gpar(col = grill))
+  }
   grid.draw(x)
 }
 
@@ -222,27 +225,30 @@ t.gtable <- function(x) {
   rows <- stats::setNames(seq_along(x$heights), rownames(x))[i]
   cols <- stats::setNames(seq_along(x$widths), colnames(x))[j]
 
-  if ((length(rows) > 1 && any(diff(rows) < 1)) ||
-      (length(cols) > 1 && any(diff(cols) < 1))) {
+  rows_cur <- stats::na.omit(rows)
+  cols_cur <- stats::na.omit(cols)
+
+  if ((length(rows) > 1 && any(diff(rows_cur) < 1)) ||
+      (length(cols) > 1 && any(diff(cols_cur) < 1))) {
     cli::cli_abort("{.arg i} and {.arg j} must be increasing sequences of numbers")
   }
 
-  i <- seq_along(x$heights) %in% seq_along(x$heights)[rows]
-  j <- seq_along(x$widths) %in% seq_along(x$widths)[cols]
+  i <- seq_along(x$heights) %in% seq_along(x$heights)[rows_cur]
+  j <- seq_along(x$widths) %in% seq_along(x$widths)[cols_cur]
 
-  x$heights <- x$heights[rows]
-  x$rownames <- x$rownames[rows]
-  x$widths <- x$widths[cols]
-  x$colnames <- x$colnames[cols]
+  x$heights <- x$heights[rows_cur]
+  x$rownames <- x$rownames[rows_cur]
+  x$widths <- x$widths[cols_cur]
+  x$colnames <- x$colnames[cols_cur]
 
   layout <- unclass(x$layout)
 
-  keep <- layout$t %in% rows & layout$b %in% rows &
-          layout$l %in% cols & layout$r %in% cols
+  keep <- layout$t %in% rows_cur & layout$b %in% rows_cur &
+          layout$l %in% cols_cur & layout$r %in% cols_cur
   x$grobs <- x$grobs[keep]
 
-  adj_rows <- cumsum(!i)
-  adj_cols <- cumsum(!j)
+  adj_rows <- cumsum(!stats::na.omit(i))
+  adj_cols <- cumsum(!stats::na.omit(j))
 
   layout$r <- layout$r - adj_cols[layout$r]
   layout$l <- layout$l - adj_cols[layout$l]
@@ -251,6 +257,17 @@ t.gtable <- function(x) {
 
   # Drop the unused rows from layout
   x$layout <- new_data_frame(layout)[keep, ]
+
+  if (anyNA(rows)) {
+    for (i in which(is.na(rows))) {
+      x <- gtable_add_rows(x, unit(0, "mm"), i - 1)
+    }
+  }
+  if (anyNA(cols)) {
+    for (i in which(is.na(cols))) {
+      x <- gtable_add_cols(x, unit(0, "mm"), i - 1)
+    }
+  }
   x
 }
 
@@ -272,3 +289,43 @@ gtable_height <- function(x) sum(x$heights)
 #' @param x A gtable object
 #' @export
 gtable_width <- function(x) sum(x$widths)
+
+#' Convert to a gtable
+#'
+#' @param x An object to convert.
+#' @param ... Arguments forwarded to methods.
+#'
+#' @return A gtable object
+#' @export
+as.gtable <- function(x, ...) {
+  check_dots_used()
+  UseMethod("as.gtable")
+}
+
+#' @export
+as.gtable.default <- function(x, ...) {
+  cli::cli_abort("Can't convert {.obj_type_friendly {x}} to a {.cls gtable}.")
+}
+
+#' @export
+as.gtable.gtable <- function(x, ...) x
+
+#' @export
+#' @describeIn as.gtable Creates a 1-cell gtable containing the grob.
+#' @param widths,heights Scalar unit setting the size of the table. Defaults
+#'   to [grid::grobWidth()] and [grid::grobHeight()] of `x` respectively.
+as.gtable.grob <- function(x, widths = NULL, heights = NULL, ...) {
+  if (length(widths) > 1) {
+    widths <- widths[1]
+    cli::cli_warn("{.arg widths} truncated to length 1.")
+  }
+  if (length(heights) > 1) {
+    heights <- heights[1]
+    cli::cli_warn("{.arg heights} truncated to length 1.")
+  }
+  table <- gtable(
+    widths  = widths  %||% grobWidth(x),
+    heights = heights %||% grobHeight(x)
+  )
+  gtable_add_grob(table, x, t = 1L, l = 1L, b = 1L, r = 1L, ...)
+}
